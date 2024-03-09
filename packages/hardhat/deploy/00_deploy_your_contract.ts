@@ -22,7 +22,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("ETHBridge", {
+  await deploy("ERC20Token", {
     from: deployer,
     // Contract constructor arguments
     args: [deployer, "0xc5618D6509344EED2d7e65269EeE488c13474032", "0xccB0f0a5783643C81AD77C8c3C203cA344A7Ad7E"],
@@ -33,7 +33,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const yourContract = await hre.ethers.getContract<Contract>("ETHBridge", deployer);
+  const yourContract = await hre.ethers.getContract<Contract>("ERC20Token", deployer);
   console.log("👋 Initial greeting:", await yourContract.greeting());
 };
 
