@@ -22,10 +22,10 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("YourContract", {
+  await deploy("ETHBridge", {
     from: deployer,
     // Contract constructor arguments
-    args: [deployer],
+    args: [deployer, "0xc5618D6509344EED2d7e65269EeE488c13474032", "0xccB0f0a5783643C81AD77C8c3C203cA344A7Ad7E"],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -33,7 +33,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const yourContract = await hre.ethers.getContract<Contract>("YourContract", deployer);
+  const yourContract = await hre.ethers.getContract<Contract>("ETHBridge", deployer);
   console.log("👋 Initial greeting:", await yourContract.greeting());
 };
 
@@ -41,4 +41,4 @@ export default deployYourContract;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployYourContract.tags = ["YourContract"];
+deployYourContract.tags = ["ERC20Token"];
