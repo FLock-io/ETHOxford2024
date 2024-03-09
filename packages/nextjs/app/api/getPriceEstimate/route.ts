@@ -5,12 +5,17 @@ import { ethers } from "ethers";
 const FLARE_RPC = "https://flare-api.flare.network/ext/bc/C/rpc";
 
 export async function GET(request: NextRequest) {
-
   const url = new URL(request.url);
   const symbol = url.searchParams.get("symbol") || "FLR";
-  const price = await runGettingDataFeeds(symbol);
+  try {
+    const price = await runGettingDataFeeds(symbol);
+    console.log("Price: ", price);
 
-  return NextResponse.json({ symbol: symbol, price: price });
+    return NextResponse.json({ symbol: symbol, price: price });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Error with price oracle" }, { status: 500 });
+  }
 }
 
 async function runGettingDataFeeds(_symbol: string) {
@@ -28,6 +33,7 @@ async function runGettingDataFeeds(_symbol: string) {
 
   // 3. Retrieve the FTSO Registry
   const ftsoRegistryAddr = await flareContractRegistry.getContractAddressByName("FtsoRegistry");
+
   const ftsoRegistry = new ethers.Contract(ftsoRegistryAddr, flare.nameToAbi("FtsoRegistry", "flare").data, provider);
 
   // 4. Get latest price
