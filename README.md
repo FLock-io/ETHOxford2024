@@ -1,4 +1,8 @@
-# 🏗 Scaffold-ETH 2
+# 🏗 Flare Bridge - Build a bi-directional capital-efficient bridge from an EVM chain to Flare utilising the State Connector & Flare Time Series Oracle.
+
+![Debug Contracts tab](img/ethOxford-v1.png)
+
+# Scaffold-ETH 2
 
 <h4 align="center">
   <a href="https://docs.scaffoldeth.io">Documentation</a> |
