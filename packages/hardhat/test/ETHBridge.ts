@@ -38,25 +38,29 @@ describe("ETHBridge", function () {
   describe("Test contract", function () {
     it("Should deposit and release ETH", async function () {
         // User balance before 
-        await ethBridge.connect(user1).bridgeETH(BigInt(10**18), {value: BigInt(10**18)})
+        await ethBridge.connect(user1).bridgeETH(BigInt(10**18), BigInt(10**16), {value: BigInt(10**18+10**16)})
         // Balance of the contract should be 1
-        expect(await ethers.provider.getBalance(await ethBridge.getAddress())).to.equal(BigInt(10**18))
+        expect(await ethers.provider.getBalance(await ethBridge.getAddress())).to.equal(BigInt(10**18+10**16))
 
-        await ethBridge.connect(event_listener).releaseETH(user1.address, BigInt(10**18))
+        const tx = await ethBridge.connect(event_listener).releaseETH(user1.address, BigInt(10**18))
+        const receipt = await tx.wait()
+        console.log("Gas used for releaseETH", receipt?.gasUsed.toString())
         // Balance of the contract should be 0
-        expect(await ethers.provider.getBalance(await ethBridge.getAddress())).to.equal(0)
+        expect(await ethers.provider.getBalance(await ethBridge.getAddress())).to.equal(BigInt(10**16))
     })
 
     it("Should deposit and release wFLR", async function () {
         // User balance before 
-        await ethBridge.connect(event_listener).releaseWFLR(user1.address, BigInt(10**18))
+        const tx = await ethBridge.connect(event_listener).releaseWFLR(user1.address, BigInt(10**18))
+        const receipt = await tx.wait()
+        console.log("Gas used for releaseWFLR", receipt?.gasUsed.toString())
 
         // Balance of the contract should be 0
         expect(await wrappedFlare.balanceOf(user1.address)).to.equal(BigInt(10**18))
 
         await wrappedFlare.connect(user1).approve(await ethBridge.getAddress(), BigInt(10**18))
 
-        await ethBridge.connect(user1).bridgeWFLR(BigInt(10**18))
+        await ethBridge.connect(user1).bridgeWFLR(BigInt(10**18), BigInt(10**16), {value: BigInt(10**16)})
     
         // Balance of the contract should be 0
         expect(await wrappedFlare.balanceOf(user1.address)).to.equal(0)

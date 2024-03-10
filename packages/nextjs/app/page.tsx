@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import { formatUnits } from "viem";
+import { set } from "nprogress";
 
 // import { useAccount } from "wagmi";
 
@@ -35,10 +37,26 @@ const Home: NextPage = () => {
 
   const estimateGasFees = async () => {
     setLoadingGasFees(true);
-    // const gasFees = await estimateGasFees();
-    setGasFees(0.01);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/getPriceEstimate?chain=${fromChain ? "ETH" : "FLR"}&tokenType=NATIVE`,
+      );
+      const data = await response.json();
+      console.log(data);
+      const gasFee = formatUnits(BigInt(Math.floor(data.gasFee)), 18);
+      console.log(gasFee);
+      setGasFees(Number(gasFee));
+    } catch (error) {
+      console.error(error);
+    }
     setLoadingGasFees(false);
   };
+
+  const changeToken = (symbol: string) => {
+    setCurrentToken(tokens.find(token => token.symbol === symbol) as Token);
+    setAmountToSend(0);
+    estimateGasFees();
+  }
 
   useEffect(() => {
     estimateGasFees();
@@ -71,13 +89,13 @@ const Home: NextPage = () => {
                 </svg>
               </div>
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-32">
-                <li onClick={() => setCurrentToken(tokens.find(token => token.symbol === "ETH") as Token)}>
+                <li onClick={() => changeToken("ETH")}>
                   <a>{fromChain ? "wETH" : "ETH"}</a>
                 </li>
-                <li onClick={() => setCurrentToken(tokens.find(token => token.symbol === "FLR") as Token)}>
+                <li onClick={() => changeToken("FLR")}>
                   <a>{fromChain ? "FLR" : "wFLR"}</a>
                 </li>
-                <li onClick={() => setCurrentToken(tokens.find(token => token.symbol === "BRT") as Token)}>
+                <li onClick={() => changeToken("BRT")}>
                   <a>BRT</a>
                 </li>
               </ul>
