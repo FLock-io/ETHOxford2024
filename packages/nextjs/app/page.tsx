@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import { useAccount } from "wagmi";
+
+// import { useAccount } from "wagmi";
 
 type Token = {
   symbol: string;
@@ -25,9 +26,23 @@ const tokens: Token[] = [
 ];
 
 const Home: NextPage = () => {
-  const { address: connectedAddress } = useAccount();
+  // const { address: connectedAddress } = useAccount();
   const [currentToken, setCurrentToken] = useState(tokens.find(token => token.symbol === "ETH") as Token);
   const [fromChain, setFromChain] = useState(0);
+  const [amountToSend, setAmountToSend] = useState(0);
+  const [gasFees, setGasFees] = useState(0);
+  const [loadingGasFees, setLoadingGasFees] = useState(false);
+
+  const estimateGasFees = async () => {
+    setLoadingGasFees(true);
+    // const gasFees = await estimateGasFees();
+    setGasFees(0.01);
+    setLoadingGasFees(false);
+  };
+
+  useEffect(() => {
+    estimateGasFees();
+  }, []);
 
   return (
     <>
@@ -73,7 +88,14 @@ const Home: NextPage = () => {
             <div className="flex flex-row justify-between items-center">
               <div>{fromChain ? "Flare" : "Ethereum"}</div>
               <div className="flex flex-row items-center space-x-3">
-                <input type="text" placeholder="Amount" className="w-fit max-w-xs bg-[#F5F5F5] border-none" />
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  className="input bg-[#F5F5F5] w-fit max-w-xs text-end"
+                  onChange={e => {
+                    setAmountToSend(Number(e.target.value));
+                  }}
+                />
                 <p className="text-blue-500">Max</p>
               </div>
             </div>
@@ -85,7 +107,11 @@ const Home: NextPage = () => {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              onClick={() => setFromChain(prev => (prev ? 0 : 1))}
+              onClick={() => {
+                setFromChain(prev => (prev ? 0 : 1));
+                estimateGasFees();
+                setAmountToSend(0);
+              }}
             >
               <path
                 stroke="currentColor"
@@ -101,7 +127,35 @@ const Home: NextPage = () => {
             <div className="flex flex-row justify-between items-center">
               <div>{fromChain ? "Ethereum" : "Flare"}</div>
               <div className="flex flex-row items-center space-x-3">
-                <p>Amount</p>
+                <div className="flex flex-row items-center gap-x-1">
+                  {amountToSend} {currentToken.symbol} +{" "}
+                  {loadingGasFees ? (
+                    <span className="loading loading-dots loading-xs"></span>
+                  ) : (
+                    <p>
+                      {gasFees} {fromChain ? "FLR" : "ETH"}
+                    </p>
+                  )}
+                  <div className="tooltip" data-tip="Amount + Tx Fees">
+                    <button className="btn btn-ghost hover:bg-[#F5F5F5] bg-[#F5F5F5]">
+                      <svg
+                        className="w-6 h-6 text-gray-800 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
