@@ -34,6 +34,12 @@ const Home: NextPage = () => {
   const [gasFees, setGasFees] = useState(0);
   const [loadingGasFees, setLoadingGasFees] = useState(false);
 
+  const checkAllowance = async () => {};
+
+  const approveTokens = async () => {};
+
+  const sendTokens = async () => {};
+
   const currentChain = () => {
     if (fromChain) {
       if (currentToken.symbol === "ETH") {
@@ -48,13 +54,21 @@ const Home: NextPage = () => {
         return "ERC";
       }
     }
-  }
+  };
+
+  const isWrapped = () => {
+    if (fromChain) {
+      return currentToken.symbol !== "FLR";
+    } else {
+      return currentToken.symbol !== "ETH";
+    }
+  };
 
   const estimateGasFees = async () => {
     setLoadingGasFees(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/getPriceEstimate?chain=${fromChain ? "ETH" : "FLR"}&tokenType=${currentChain()}`,
+        `/api/getPriceEstimate?chain=${fromChain ? "ETH" : "FLR"}&tokenType=${currentChain()}`,
       );
       const data = await response.json();
       console.log(data);
@@ -71,7 +85,7 @@ const Home: NextPage = () => {
     setCurrentToken(tokens.find(token => token.symbol === symbol) as Token);
     setAmountToSend(0);
     estimateGasFees();
-  }
+  };
 
   useEffect(() => {
     estimateGasFees();
@@ -86,7 +100,9 @@ const Home: NextPage = () => {
             <div className="dropdown">
               <div tabIndex={0} role="button" className="btn m-1 rounded-xl">
                 <img src={currentToken.icon} alt={currentToken.symbol} className="w-6 h-6" />
-                <p className="ml-2">{currentToken.symbol}</p>
+                <p className="ml-2">
+                  {currentToken.symbol != "BRT" && isWrapped() ? "w" + currentToken.symbol : currentToken.symbol}
+                </p>
                 <svg
                   className="w-6 h-6 text-gray-800"
                   aria-hidden="true"
@@ -193,7 +209,9 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <button className="btn w-1/3 rounded-3xl text-xl font-bold">Send</button>
+            <button className="btn w-1/3 rounded-3xl text-xl font-bold" disabled={loadingGasFees || amountToSend === 0}>
+              {isWrapped() ? "Approve" : "Send"}
+            </button>
           </div>
         </div>
       </div>
