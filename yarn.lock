@@ -19,6 +19,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@adraffy/ens-normalize@npm:1.9.0":
+  version: 1.9.0
+  resolution: "@adraffy/ens-normalize@npm:1.9.0"
+  checksum: a8d47f85db7a0bba01227fae8781a3245a4517875503d6848a47ca29e7f7da271742a2f93b55afc1b9201e74eda1fd1f1e6e79e70f967359fd7f6ec3d45bf243
+  languageName: node
+  linkType: hard
+
 "@alloc/quick-lru@npm:^5.2.0":
   version: 5.2.0
   resolution: "@alloc/quick-lru@npm:5.2.0"
@@ -791,6 +798,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@flarenetwork/flare-periphery-contract-artifacts@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "@flarenetwork/flare-periphery-contract-artifacts@npm:0.1.7"
+  checksum: 9d15f2f21f0c7d6f4f8e661959d673b6a8c9e8b70e08e019fa8d3218e287da821c84cb260fb42d4ab5711be5d7212a523848d349966189035e873602d4f53d67
+  languageName: node
+  linkType: hard
+
 "@heroicons/react@npm:~2.0.11":
   version: 2.0.18
   resolution: "@heroicons/react@npm:2.0.18"
@@ -1225,6 +1239,13 @@ __metadata:
   dependencies:
     "@noble/hashes": 1.3.3
   checksum: b65342ee66c4a440eee2978524412eabba9a9efdd16d6370e15218c6a7d80bddf35e66bb57ed52c0dfd32cb9a717b439ab3a72db618f1a0066dfebe3fd12a421
+  languageName: node
+  linkType: hard
+
+"@noble/hashes@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@noble/hashes@npm:1.1.2"
+  checksum: 3c2a8cb7c2e053811032f242155d870c5eb98844d924d69702244d48804cb03b42d4a666c49c2b71164420d8229cb9a6f242b972d50d5bb2f1d673b98b041de2
   languageName: node
   linkType: hard
 
@@ -1980,6 +2001,7 @@ __metadata:
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
     "@ethersproject/providers": ~5.7.2
+    "@flarenetwork/flare-periphery-contract-artifacts": ^0.1.7
     "@heroicons/react": ~2.0.11
     "@rainbow-me/rainbowkit": 1.3.5
     "@trivago/prettier-plugin-sort-imports": ~4.1.1
@@ -1997,6 +2019,7 @@ __metadata:
     eslint-config-next: ~14.0.4
     eslint-config-prettier: ~8.5.0
     eslint-plugin-prettier: ~4.2.1
+    ethers: 6.3.0
     next: ~14.0.4
     next-themes: ~0.2.1
     nprogress: ~0.2.0
@@ -6945,6 +6968,20 @@ __metadata:
     ethereum-cryptography: ^0.1.3
     rlp: ^2.2.4
   checksum: 27a3c79d6e06b2df34b80d478ce465b371c8458b58f5afc14d91c8564c13363ad336e6e83f57eb0bd719fde94d10ee5697ceef78b5aa932087150c5287b286d1
+  languageName: node
+  linkType: hard
+
+"ethers@npm:6.3.0":
+  version: 6.3.0
+  resolution: "ethers@npm:6.3.0"
+  dependencies:
+    "@adraffy/ens-normalize": 1.9.0
+    "@noble/hashes": 1.1.2
+    "@noble/secp256k1": 1.7.1
+    aes-js: 4.0.0-beta.3
+    tslib: 2.4.0
+    ws: 8.5.0
+  checksum: 4248d8c5d02382b6e2ced896c9b3f62b8d33b5121127ac5597eeec6e49acb15753f5d4a7e0d403b3131bf092417f9686384af28f9285544c184ccce502bca96d
   languageName: node
   linkType: hard
 

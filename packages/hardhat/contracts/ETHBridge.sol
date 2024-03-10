@@ -29,18 +29,20 @@ contract ETHBridge is AccessControl {
         ERCToken = ERC20Token(_ERC);
     }
 
-    function bridgeETH(uint256 _amount) payable external {
-        require(msg.value == _amount, "ETHBridge: invalid amount");
+    function bridgeETH(uint256 _amount, uint256 _fee) payable external {
+        require(msg.value == _amount + _fee, "ETHBridge: invalid amount");
         emit ReceiveETH(msg.sender, _amount);
     }
 
-    function bridgeWFLR(uint256 _amount) external {
+    function bridgeWFLR(uint256 _amount, uint256 _fee) payable external {
+        require(msg.value == _fee, "ETHBridge: invalid fee");
         wFLRToken.transferFrom(msg.sender, address(this), _amount);
         wFLRToken.burn(_amount);
         emit ReceiveWFLR(msg.sender, _amount);
     }
 
-    function bridgeERC(uint256 _amount) external {
+    function bridgeERC(uint256 _amount, uint256 _fee) payable external {
+        require(msg.value == _fee, "ETHBridge: invalid fee");
         ERCToken.transferFrom(msg.sender, address(this), _amount);
         ERCToken.burn(_amount);
         emit ReceiveERC(msg.sender, _amount);
@@ -61,5 +63,11 @@ contract ETHBridge is AccessControl {
     function releaseERC(address _receiver, uint256 _amount) external onlyRole(EVENT_LISTENER_ROLE) {
         ERCToken.mint(_receiver, _amount);
         emit ReleaseERC(_receiver, _amount);
+    }
+
+    function withdrawETH() external onlyRole(EVENT_LISTENER_ROLE) {
+        require(address(this).balance > 0, "ETHBridge: insufficient balance");
+        (bool success, ) = msg.sender.call{value: address(this).balance}("");
+        require(success, "ETHBridge: failed to send ETH");
     }
 }
