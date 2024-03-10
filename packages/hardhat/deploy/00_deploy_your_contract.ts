@@ -22,10 +22,10 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("ERC20Token", {
+  await deploy("FLRBridge", {
     from: deployer,
     // Contract constructor arguments
-    args: [deployer, "0xc5618D6509344EED2d7e65269EeE488c13474032", "0xccB0f0a5783643C81AD77C8c3C203cA344A7Ad7E"],
+    args: [deployer, "0xb1050CDEB09bF6A221B4f142D01379eB9C79738F", "0x0f5e5FF59E5845b16C9948CE01E449e84668FB27"],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -33,7 +33,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const yourContract = await hre.ethers.getContract<Contract>("ERC20Token", deployer);
+  const yourContract = await hre.ethers.getContract<Contract>("FLRBridge", deployer);
   console.log("👋 Initial greeting:", await yourContract.greeting());
 };
 
