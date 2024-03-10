@@ -66,7 +66,7 @@ contract FLRBridge is AccessControl {
         emit ReleaseERC(_receiver, _amount);
     }
 
-    function withdraw() external onlyRole(EVENT_LISTENER_ROLE) {
+    function withdrawFLR() external onlyRole(EVENT_LISTENER_ROLE) {
         require(address(this).balance > 0, "FLRBridge: insufficient balance");
         (bool success, ) = msg.sender.call{value: address(this).balance}("");
         require(success, "FLRBridge: failed to send ETH");
