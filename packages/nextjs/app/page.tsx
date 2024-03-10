@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { formatUnits } from "viem";
-import { set } from "nprogress";
 
 // import { useAccount } from "wagmi";
 
