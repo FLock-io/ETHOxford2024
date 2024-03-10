@@ -7,6 +7,7 @@ dotenv.config();
 
 const FLR_BRIDGE_CONTRACT_ADDRESS = "0x07962C28579b1e76f3d39E860a077aA40aFe851C"; 
 const ETH_BRIDGE_CONTRACT_ADDRESS = "0xD92A717bf82CF506Af981230636e88dBdd2a1347";
+const providerApiKey = process.env.ALCHEMY_API_KEY || "oKxs-03sij-U_N0iOlrSsZFr29-IqbuF";
 
 async function main() {
     console.log("Starting the bridge listener...");
@@ -14,21 +15,31 @@ async function main() {
     const fLRprovider = new ethers.JsonRpcProvider(
         'https://coston-api.flare.network/ext/C/rpc	'
       );
-    const deployer = new ethers.Wallet(
+
+    const fLR_deployer = new ethers.Wallet(
         process.env.DEPLOYER_PRIVATE_KEY ? process.env.DEPLOYER_PRIVATE_KEY : "",
         fLRprovider
+    );
+
+    const ETHProvider = new ethers.JsonRpcProvider(
+        `https://eth-sepolia.g.alchemy.com/v2/X1EpVDbiokKqFoMnR4_J9DToaCjjJy3E`
+    );
+
+    const ETHDeployer = new ethers.Wallet(
+        process.env.DEPLOYER_PRIVATE_KEY ? process.env.DEPLOYER_PRIVATE_KEY : "",
+        ETHProvider
     );
 
     const FLR_BridgeContract = new ethers.Contract(
         FLR_BRIDGE_CONTRACT_ADDRESS,
         FLRBridge.abi,
-        deployer 
+        fLR_deployer 
     );
 
     const ETH_BridgeContract = new ethers.Contract(
         ETH_BRIDGE_CONTRACT_ADDRESS,
         ETHBridge.abi,
-        deployer 
+        ETHDeployer 
     );
 
     console.log("Listening for ReceiveFLR events...");
@@ -39,11 +50,13 @@ async function main() {
         // Call the releaseFLR function upon catching the event
         try {
             console.log(`Attempting to release WFLR to ${sender}...`);
-            const tx = await ETH_BridgeContract.releaseWFLR(sender, value, {
+            const tx = await ETH_BridgeContract.releaseETH(sender, value, {
                 gasLimit: 1000000, // Set an appropriate gas limit
             });
             const receipt = await tx.wait();
-            console.log(`WFLR released successfully. Receipt Hash: ${receipt}`);
+            console.log(`WFLR released successfully`);  
+            console.log(receipt.hash);
+
         } catch (error: any) {
             console.error(`Failed to release WFLR: ${error.message}`);
         }

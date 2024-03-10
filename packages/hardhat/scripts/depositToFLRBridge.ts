@@ -17,7 +17,7 @@ async function main() {
         value: total, // Pass the BigNumber directly for the transaction value
     });
     const receipt = await tx.wait();
-    console.log(receipt);
+    console.log(receipt.hash);
 };
 
 main().catch((error) => {
