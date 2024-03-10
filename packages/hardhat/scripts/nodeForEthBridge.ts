@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const FLBRIDGE_CONTRACT_ADDRESS = "0xccB0f0a5783643C81AD77C8c3C203cA344A7Ad7E"; 
+const ETH_BRIDGE_CONTRACT_ADDRESS = "0xBA81FB1FddB2c281A617129842B7B9cA09217ae3"; 
 
 async function main() {
     console.log("Starting the bridge listener...");
@@ -13,12 +13,12 @@ async function main() {
         'https://sepolia-rpc.scroll.io/'
       );
     const deployer = new ethers.Wallet(
-        process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY : "",
+        process.env.DEPLOYER_PRIVATE_KEY ? process.env.DEPLOYER_PRIVATE_KEY : "",
         ethprovider
     );
 
     const bridgeContract = new ethers.Contract(
-        FLBRIDGE_CONTRACT_ADDRESS,
+        ETH_BRIDGE_CONTRACT_ADDRESS,
         FLRBridge.abi,
         deployer 
     );
