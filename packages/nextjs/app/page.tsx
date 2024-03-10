@@ -1,66 +1,112 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Address } from "~~/components/scaffold-eth";
+
+type Token = {
+  symbol: string;
+  icon: string;
+};
+
+const tokens: Token[] = [
+  {
+    symbol: "ETH",
+    icon: "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+  },
+  {
+    symbol: "FLR",
+    icon: "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+  },
+  {
+    symbol: "BRT",
+    icon: "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+  },
+];
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+  const [currentToken, setCurrentToken] = useState(tokens.find(token => token.symbol === "ETH") as Token);
+  const [fromChain, setFromChain] = useState(0);
 
   return (
     <>
-      <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
+      <div className="flex items-center flex-col flex-grow pt-10 text-black">
+        <div className="w-2/5 bg-white rounded-2xl p-7 space-y-4">
+          <div className="flex flex-row space-x-5">
+            <p className="font-semibold text-base">Token</p>
+            <div className="dropdown">
+              <div tabIndex={0} role="button" className="btn m-1 rounded-xl">
+                <img src={currentToken.icon} alt={currentToken.symbol} className="w-6 h-6" />
+                <p className="ml-2">{currentToken.symbol}</p>
+                <svg
+                  className="w-6 h-6 text-gray-800"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 9-7 7-7-7"
+                  />
+                </svg>
+              </div>
+              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-32">
+                <li onClick={() => setCurrentToken(tokens.find(token => token.symbol === "ETH") as Token)}>
+                  <a>{fromChain ? "wETH" : "ETH"}</a>
+                </li>
+                <li onClick={() => setCurrentToken(tokens.find(token => token.symbol === "FLR") as Token)}>
+                  <a>{fromChain ? "FLR" : "wFLR"}</a>
+                </li>
+                <li onClick={() => setCurrentToken(tokens.find(token => token.symbol === "BRT") as Token)}>
+                  <a>BRT</a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
-        </div>
-
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
+          <div className="w-full bg-[#F5F5F5] p-4 rounded-2xl">
+            <span className="text-xs">From</span>
+            <div className="flex flex-row justify-between items-center">
+              <div>{fromChain ? "Flare" : "Ethereum"}</div>
+              <div className="flex flex-row items-center space-x-3">
+                <input type="text" placeholder="Amount" className="w-fit max-w-xs bg-[#F5F5F5] border-none" />
+                <p className="text-blue-500">Max</p>
+              </div>
             </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
+          </div>
+          <div className="flex justify-center">
+            <svg
+              className="w-6 h-6 text-gray-800"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              onClick={() => setFromChain(prev => (prev ? 0 : 1))}
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.7 7.7A7.1 7.1 0 0 0 5 10.8M18 4v4h-4m-7.7 8.3A7.1 7.1 0 0 0 19 13.2M6 20v-4h4"
+              />
+            </svg>
+          </div>
+          <div className="w-full bg-[#F5F5F5] p-4 rounded-2xl">
+            <span className="text-xs">To</span>
+            <div className="flex flex-row justify-between items-center">
+              <div>{fromChain ? "Ethereum" : "Flare"}</div>
+              <div className="flex flex-row items-center space-x-3">
+                <p>Amount</p>
+              </div>
             </div>
+          </div>
+          <div className="flex justify-center">
+            <button className="btn w-1/3 rounded-3xl text-xl font-bold">Send</button>
           </div>
         </div>
       </div>
