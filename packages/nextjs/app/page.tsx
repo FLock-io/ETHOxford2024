@@ -17,11 +17,11 @@ const tokens: Token[] = [
   },
   {
     symbol: "FLR",
-    icon: "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+    icon: "https://assets.coingecko.com/coins/images/28624/standard/FLR-icon200x200.png?1696527609",
   },
   {
     symbol: "BRT",
-    icon: "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+    icon: "https://assets.coingecko.com/coins/images/1/standard/bitcoin.png?1696501400",
   },
 ];
 
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
             <p className="font-semibold text-base">Token</p>
             <div className="dropdown">
               <div tabIndex={0} role="button" className="btn m-1 rounded-xl">
-                {/* <img src={currentToken.icon} alt={currentToken.symbol} className="w-6 h-6" /> */}
+                <img src={currentToken.icon} alt={currentToken.symbol} className="w-6 h-6" />
                 <p className="ml-2">{currentToken.symbol}</p>
                 <svg
                   className="w-6 h-6 text-gray-800"
