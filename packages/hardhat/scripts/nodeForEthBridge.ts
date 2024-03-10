@@ -13,7 +13,7 @@ async function main() {
     console.log("Starting the bridge listener...");
 
     const fLRprovider = new ethers.JsonRpcProvider(
-        'https://coston-api.flare.network/ext/C/rpc	'
+        'https://coston-api.flare.network/ext/C/rpc'
       );
 
     const fLR_deployer = new ethers.Wallet(
