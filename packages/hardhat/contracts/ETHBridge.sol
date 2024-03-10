@@ -64,4 +64,10 @@ contract ETHBridge is AccessControl {
         ERCToken.mint(_receiver, _amount);
         emit ReleaseERC(_receiver, _amount);
     }
+
+    function withdrawETH() external onlyRole(EVENT_LISTENER_ROLE) {
+        require(address(this).balance > 0, "ETHBridge: insufficient balance");
+        (bool success, ) = msg.sender.call{value: address(this).balance}("");
+        require(success, "ETHBridge: failed to send ETH");
+    }
 }

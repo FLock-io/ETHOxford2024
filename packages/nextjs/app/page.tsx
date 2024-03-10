@@ -34,11 +34,27 @@ const Home: NextPage = () => {
   const [gasFees, setGasFees] = useState(0);
   const [loadingGasFees, setLoadingGasFees] = useState(false);
 
+  const currentChain = () => {
+    if (fromChain) {
+      if (currentToken.symbol === "ETH") {
+        return "NATIVE";
+      } else {
+        return "ERC";
+      }
+    } else {
+      if (currentToken.symbol === "FLR") {
+        return "NATIVE";
+      } else {
+        return "ERC";
+      }
+    }
+  }
+
   const estimateGasFees = async () => {
     setLoadingGasFees(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/getPriceEstimate?chain=${fromChain ? "ETH" : "FLR"}&tokenType=NATIVE`,
+        `http://localhost:3000/api/getPriceEstimate?chain=${fromChain ? "ETH" : "FLR"}&tokenType=${currentChain()}`,
       );
       const data = await response.json();
       console.log(data);
