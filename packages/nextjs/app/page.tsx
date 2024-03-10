@@ -52,7 +52,7 @@ const Home: NextPage = () => {
             <p className="font-semibold text-base">Token</p>
             <div className="dropdown">
               <div tabIndex={0} role="button" className="btn m-1 rounded-xl">
-                <img src={currentToken.icon} alt={currentToken.symbol} className="w-6 h-6" />
+                {/* <img src={currentToken.icon} alt={currentToken.symbol} className="w-6 h-6" /> */}
                 <p className="ml-2">{currentToken.symbol}</p>
                 <svg
                   className="w-6 h-6 text-gray-800"
@@ -63,9 +63,9 @@ const Home: NextPage = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="m19 9-7 7-7-7"
                   />
                 </svg>
@@ -115,9 +115,9 @@ const Home: NextPage = () => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M17.7 7.7A7.1 7.1 0 0 0 5 10.8M18 4v4h-4m-7.7 8.3A7.1 7.1 0 0 0 19 13.2M6 20v-4h4"
               />
             </svg>
@@ -147,9 +147,9 @@ const Home: NextPage = () => {
                       >
                         <path
                           stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M10 11h2v5m-2 0h4m-2.6-8.5h0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                         />
                       </svg>
