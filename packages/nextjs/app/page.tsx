@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { time } from "console";
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import type { NextPage } from "next";
-import { set } from "nprogress";
 import { formatUnits, parseEther } from "viem";
-import { useAccount, useContractRead, useContractWrite } from "wagmi";
-import { ERC20TOKEN_ABI } from "~~/contracts/ERC20Token";
+import { useAccount, useContractWrite } from "wagmi";
+// import { ERC20TOKEN_ABI } from "~~/contracts/ERC20Token";
 import { ETHBRIDGE_ABI } from "~~/contracts/ETHBridge";
 import { FLRBRIDGE_ABI } from "~~/contracts/FLRBridge";
 
@@ -34,11 +32,11 @@ const tokens: Token[] = [
 const ETHBRIDGE_ADDRESS = "0xD92A717bf82CF506Af981230636e88dBdd2a1347";
 const FLRBRIDGE_ADDRESS = "0x07962C28579b1e76f3d39E860a077aA40aFe851C";
 
-const WFLR_ADDRESS = "0xf4b66326E763a6adB4784A1B77274B1a07fdBFA5";
-const ETHBRT_ADDRESS = "0x0DEE99044ACBa96d20e799C6757473a6dAca1eA4";
+// const WFLR_ADDRESS = "0xf4b66326E763a6adB4784A1B77274B1a07fdBFA5";
+// const ETHBRT_ADDRESS = "0x0DEE99044ACBa96d20e799C6757473a6dAca1eA4";
 
-const WETH_ADDRESS = "0xb1050CDEB09bF6A221B4f142D01379eB9C79738F";
-const FLRBRT = "0x0f5e5FF59E5845b16C9948CE01E449e84668FB27";
+// const WETH_ADDRESS = "0xb1050CDEB09bF6A221B4f142D01379eB9C79738F";
+// const FLRBRT = "0x0f5e5FF59E5845b16C9948CE01E449e84668FB27";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -47,41 +45,40 @@ const Home: NextPage = () => {
   const [amountToSend, setAmountToSend] = useState(0);
   const [gasFees, setGasFees] = useState(0);
   const [loadingGasFees, setLoadingGasFees] = useState(false);
-  const [txLoading, setTxLoading] = useState(false);
 
-  const sepoliaProvider = new ethers.JsonRpcProvider(
-    "https://eth-sepolia.g.alchemy.com/v2/oKxs-03sij-U_N0iOlrSsZFr29-IqbuF",
-  );
-  const flareProvider = new ethers.JsonRpcProvider("https://coston-api.flare.network/ext/C/rpc");
+  // const sepoliaProvider = new ethers.JsonRpcProvider(
+  //   "https://eth-sepolia.g.alchemy.com/v2/oKxs-03sij-U_N0iOlrSsZFr29-IqbuF",
+  // );
+  // const flareProvider = new ethers.JsonRpcProvider("https://coston-api.flare.network/ext/C/rpc");
 
-  const checkAllowance = async () => {
-    if (!connectedAddress) return;
-    // console.log(await flareProvider._network);
-    // console.log(sepoliaProvider);
+  // const checkAllowance = async () => {
+  //   if (!connectedAddress) return;
+  //   console.log(await flareProvider._network);
+  //   console.log(sepoliaProvider);
 
-    // let signer;
-    // if (fromChain) {
-    //   signer = await flareProvider.getSigner();
-    // } else {
-    //   signer = await sepoliaProvider.getSigner();
-    // }
+  //   let signer;
+  //   if (fromChain) {
+  //     signer = await flareProvider.getSigner();
+  //   } else {
+  //     signer = await sepoliaProvider.getSigner();
+  //   }
 
-    // const contract = new ethers.Contract(
-    //   currentToken.symbol === "BRT"
-    //     ? "0xccB0f0a5783643C81AD77C8c3C203cA344A7Ad7E"
-    //     : "0xc5618D6509344EED2d7e65269EeE488c13474032",
-    //   ERC20TOKEN_ABI,
-    //   signer,
-    // );
+  //   const contract = new ethers.Contract(
+  //     currentToken.symbol === "BRT"
+  //       ? "0xccB0f0a5783643C81AD77C8c3C203cA344A7Ad7E"
+  //       : "0xc5618D6509344EED2d7e65269EeE488c13474032",
+  //     ERC20TOKEN_ABI,
+  //     signer,
+  //   );
 
-    // try {
-    //   const tx = await contract.allowance(fromChain ? FLRBRIDGE_ADDRESS : ETHBRIDGE_ADDRESS, connectedAddress);
-    //   console.log(tx);
-    //   console.log("Allowance:", formatUnits(tx, 18));
-    // } catch (error) {
-    //   console.error("Error: ", error);
-    // }
-  };
+  //   try {
+  //     const tx = await contract.allowance(fromChain ? FLRBRIDGE_ADDRESS : ETHBRIDGE_ADDRESS, connectedAddress);
+  //     console.log(tx);
+  //     console.log("Allowance:", formatUnits(tx, 18));
+  //   } catch (error) {
+  //     console.error("Error: ", error);
+  //   }
+  // };
 
   // const { data } = useContractRead({
   //   address: currentToken.symbol === "BRT" ? ETHBRT_ADDRESS : WETH_ADDRESS,
@@ -113,23 +110,13 @@ const Home: NextPage = () => {
   //   }
   // };
 
-  const {
-    data: dataETH,
-    isLoading: isLoadingETH,
-    isSuccess: isSuccessETH,
-    write: sendETHToETHBridge,
-  } = useContractWrite({
+  const { isLoading: isLoadingETH, write: sendETHToETHBridge } = useContractWrite({
     address: ETHBRIDGE_ADDRESS,
     abi: ETHBRIDGE_ABI,
     functionName: "bridgeETH",
   });
 
-  const {
-    data: dataFLR,
-    isLoading: isLoadingFLR,
-    isSuccess: isSuccessFLR,
-    write: sendFLRToFLRBridge,
-  } = useContractWrite({
+  const { isLoading: isLoadingFLR, write: sendFLRToFLRBridge } = useContractWrite({
     address: FLRBRIDGE_ADDRESS,
     abi: FLRBRIDGE_ABI,
     functionName: "bridgeFLR",
@@ -138,31 +125,19 @@ const Home: NextPage = () => {
   const sendTokensOnFLR = async () => {
     if (!connectedAddress) return;
 
-    setTxLoading(true);
-
-    sendETHToETHBridge({
+    sendFLRToFLRBridge({
       args: [parseEther(amountToSend.toString()), parseEther(gasFees.toString())],
       value: parseEther((amountToSend + gasFees).toString()),
     });
-
-    setTimeout(() => {
-      setTxLoading(false);
-    }, 5000);
   };
 
   const sendTokensOnETH = async () => {
     if (!connectedAddress) return;
 
-    setTxLoading(true);
-
     sendETHToETHBridge({
       args: [parseEther(amountToSend.toString()), parseEther("0.001")],
       value: parseEther((amountToSend + 0.001).toString()),
     });
-
-    setTimeout(() => {
-      setTxLoading(false);
-    }, 5000);
 
     // const contract = new ethers.Contract(fromChain ? FLRBRIDGE_ADDRESS : ETHBRIDGE_ADDRESS, ETHBRIDGE_ABI, signer);
 
@@ -376,8 +351,8 @@ const Home: NextPage = () => {
           <div className="flex justify-center">
             <button
               className="btn w-1/3 rounded-3xl text-xl font-bold"
-              disabled={loadingGasFees || amountToSend === 0 || isLoadingETH}
-              onClick={() => sendTokensOnETH()}
+              disabled={loadingGasFees || amountToSend === 0 || isLoadingETH || isLoadingFLR}
+              onClick={() => (fromChain ? sendTokensOnFLR : sendTokensOnETH())}
             >
               {isWrapped() ? "Approve" : "Send"}
               {isLoadingETH && <span className="loading ml-2"></span>}

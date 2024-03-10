@@ -3958,6 +3958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "aes-js@npm:4.0.0-beta.5":
   version: 4.0.0-beta.5
   resolution: "aes-js@npm:4.0.0-beta.5"
@@ -3965,6 +3966,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> db8838d6b761903c4e76d18ac6c097fa79af01ab
 "aes-js@npm:^3.1.2":
   version: 3.1.2
   resolution: "aes-js@npm:3.1.2"
