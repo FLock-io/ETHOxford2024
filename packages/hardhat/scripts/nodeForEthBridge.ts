@@ -22,7 +22,7 @@ async function main() {
     );
 
     const ETHProvider = new ethers.JsonRpcProvider(
-        `https://eth-sepolia.g.alchemy.com/v2/X1EpVDbiokKqFoMnR4_J9DToaCjjJy3E`
+        `https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`
     );
 
     const ETHDeployer = new ethers.Wallet(
